@@ -1,36 +1,55 @@
-# Checking The Text in Lines:
 
-# jabber = open("H:\\Python Tut\\Masterclass Assignment\\1.txt") #Open
+from itertools import islice
+import numpy as np
+
+
 #
-# for line in jabber: # Reading
-#     if "1" in line:
-#         print(line)
+# pure_training_set = np.loadtxt("assignment1.txt", delimiter=',')
+# np.set_printoptions(precision=6, suppress=True)
+# data_1 = pure_training_set.tolist()
 #
-# jabber.close() # Closing the File
-
-
-# with open("H:\\Python Tut\\Masterclass Assignment\\1.txt") as jabber:
-#     line = jabber.readline()
-#     while line:
-#         print(line, end='')
-#         line = jabber.readline()
-
-#Method 3
-
-# with open("H:\\Python Tut\\Masterclass Assignment\\1.txt") as jabber:
-#     lines = jabber.readline()
+# length_to_split = [19,1]
+# # print(data)
+# for i in range(1151):
+#     Inputt = iter(data_1[i])
+#     data_1[i] = Output = [list(islice(Inputt, elem))
+#           for elem in length_to_split]
 #
-# for line in lines[::-1]:
-#     print(line)
+# print(data_1[0][1])
+# print(data_1[100][1])
+#
+# for i in range(50): # Training set without Target
+#     print(data_1[i][0])
+#
+# for i in range(50): # Target
+#     print(data_1[i][1])
+#
+#
+#
+# print("#####################################")
+# training_sets = [
+#     [['0', '0'], ['0']],
+#     [['1', '1'], ['1']],
+#     [['1', '0'], ['1']],
+#     [['1', '1'], ['0']]
+# ]
 
-# ### Writing
-# cities = ["SDN", "IOT", "SECURITY"]
-# with open("H:\\Python Tut\\Masterclass Assignment\\1.txt", 'w') as city:
-#     for city1 in cities:
-#         print(city1, file=city)
+n = 10
+matrix = np.zeros((n,4)) # Pre-allocate matrix
+for i in range(1,n):
+    matrix[i,:] = [i, i*2, 2*i, i*1]
 
-## Binary File
+print(matrix)
 
-with open("H:\\Python Tut\\Masterclass Assignment\\2", 'bw') as bin_file:
-    for i in range(17):
-        bin_file.write(bytes([i]))
+
+def find_max(matrix):
+    return matrix.argmax()
+
+# for rows in matrix:
+#     print(matrix.argmax())
+
+res = np.apply_along_axis(find_max, 1, matrix)
+print(res)
+for i in range(len(res)):
+    res[i] += 1
+print(res)

@@ -131,6 +131,8 @@ def pointer(list_a):
 
     if counter == 9:
         print("Need To be Stopped")
+        for layer in network:
+            print(layer)
         sys.exit()
 
 
