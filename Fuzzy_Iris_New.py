@@ -3,7 +3,6 @@ import numpy as np
 from csv import reader
 
 
-
 def membership_features(x, type):
     # print(x)
     if type == "short":
@@ -32,7 +31,6 @@ def membership_features(x, type):
 
 
 def rules(row_date, rule_number):
-    print(row_date[0], row_date[1], row_date[2], row_date[3])
     if rule_number == "R1":
         result = min(max(membership_features(row_date[0], "short"), membership_features(row_date[0], "long")),
                      max(membership_features(row_date[1], "medium"), membership_features(row_date[1], "long")),
@@ -100,8 +98,12 @@ def normalization_dt_2(datasets):
         print(len(row))
 
 
+def find_max(matrix):
+    return matrix.argmax()
+
+
 # load and prepare data
-import_file = 'iris.csv'
+import_file = 'Iris_dt.csv'
 dataset = import_csv(import_file)
 # for row in range(len(dataset)):
 #     print(len(dataset[row]))
@@ -112,25 +114,62 @@ for item in range(len(dataset[0]) - 1):
     floatization(dataset, item)
 # convert class column to integers
 B = array(dataset)
-dataset_f = B[0:30, 0:4]
+compare = B[:, 4]
+compare = compare.astype(np.int)
+dataset_f = B[0:len(B), 0:4]
 dataset_f = dataset_f.astype(np.float)
 dataset_f = dataset_f.tolist()
 # Intization(dataset, len(dataset[0]) - 1)
 minmax = find_min_max_dt(dataset_f)
-
 normalization_dt(dataset_f, minmax)
+n = len(dataset_f)
+matrix = np.zeros((n, 4))  # Pre-allocate matrix
+for i in range(1, n):
+    matrix[i, :] = [rules(dataset_f[i], "R1"), rules(dataset_f[i], "R2"), rules(dataset_f[i], "R3"), rules(dataset_f[i], "R4")]
+
+print("#####" * 20)
+print("This is Matrix After Applying Rules:")
+print(matrix)
+print("#####" * 20)
+# print(matrix)
+result = np.apply_along_axis(find_max, 1, matrix)
+for i in range(len(result)):
+    result[i] += 1
+# print(result)
+
 # print("###" * 40)
 # print("Printing Dataset:")
 # print(dataset_f)
 # print("###" * 40)
-for i in range(15):
-    print(dataset_f[i])
-    RES = rules(dataset_f[i], "R1")
-    RES_2 = rules(dataset_f[i], "R2")
-    RES_3 = rules(dataset_f[i], "R3")
-    RES_4 = rules(dataset_f[i], "R4")
-    print("This is i{}".format(i))
-    print(RES, RES_2, RES_3, RES_4)
-    print("#####" * 20)
+# for i in range(100):
+#     print(dataset_f[i])
+#     RES = rules(dataset_f[i], "R1")
+#     RES_2 = rules(dataset_f[i], "R2")
+#     RES_3 = rules(dataset_f[i], "R3")
+#     RES_4 = rules(dataset_f[i], "R4")
+#     print("This is i{}".format(i))
+#     print(RES, RES_2, RES_3, RES_4)
+#     print("#####" * 20)
 
 # dataset_f = copy.deepcopy(dataset)
+final_result = []
+for i in range(len(result)):
+    if result[i] == 1:
+        final_result.append(2)
+    elif result[i] == 2:
+        final_result.append(1)
+    elif result[i] == 3:
+        final_result.append(3)
+    elif result[i] == 4:
+        final_result.append(2)
+print("####" * 20)
+print("This is Final Vector of Output after Applying Fussy classifier:")
+print(final_result)
+print("####" * 20)
+match = 0
+for i in range(len(final_result)):
+    if final_result[i] == compare[i]:
+        match += 1
+
+print("Final Match on Dataset Is:{}".format(match/150))
+
