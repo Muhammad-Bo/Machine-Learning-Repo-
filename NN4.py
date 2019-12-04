@@ -129,10 +129,15 @@ def pointer(list_a):
     elif pos == list_a.index(max(list_a)):
         counter += 1
 
-    if counter == 9:
+    if counter == 11:
         print("Need To be Stopped")
         for layer in network:
             print(layer)
+
+        calculated_test = []
+        expected_test = []
+        score_test = []
+        test_b(test_set, calculated_test, expected_test, score_test)
         sys.exit()
 
 
@@ -159,6 +164,27 @@ def test_a(dataset, expected_list, calculated_list,score_store):
 
     score_store.append(score/len(expected_list))
     pointer(score_store)
+
+def test_b(dataset, expected_list, calculated_list,score_store):
+    score = 0
+    print("This is For test set")
+    for layer in network:
+        print(layer)
+    for row in dataset:
+        prediction = prediction_nn(network, row)
+        expected_list.append(row[-1])
+        calculated_list.append(prediction)
+
+    for items in range(len(calculated_list)):
+        if expected_list[items] == calculated_list[items]:
+            score += 1
+
+    if len(expected_list) == len(calculated_list):
+        print(len(expected_list))
+        print("Final Score:{} ".format(score/len(expected_list)))
+
+    score_store.append(score/len(expected_list))
+#
 
 
 def normalization_dt(datasets, minimum_max):
@@ -209,15 +235,25 @@ minmax = find_min_max_dt(validation)
 normalization_dt(validation, minmax)
 
 # #################
+# #### Importing Validation Test ######
+import_file_1 = 'test_01.csv'
+test_set = import_csv(import_file_1)
+for item in range(len(test_set[0]) - 1):
+    floatization(test_set, item)
+# convert class column to integers
+Intization(test_set, len(test_set[0]) - 1)
+minmax = find_min_max_dt(test_set)
+normalization_dt(test_set, minmax)
+########
 score = 0
 number_of_inputs = len(dataset[0]) - 1
 number_of_outputs = len(set([row[-1] for row in dataset]))
-network = NN(number_of_inputs, 2, number_of_outputs)
+network = NN(number_of_inputs, 1, number_of_outputs)
 expected_list = []
 calculated_list = []
 i = 0
 score_store = []
-while i < 70:
+while i < 600:
     neural_network_train(network, dataset, 0.1, i, number_of_outputs)
     test_a(dataset, calculated_list, expected_list, score_store)
     expected_list = []

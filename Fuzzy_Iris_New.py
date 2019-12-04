@@ -163,13 +163,17 @@ for i in range(len(result)):
     elif result[i] == 4:
         final_result.append(2)
 print("####" * 20)
-print("This is Final Vector of Output after Applying Fussy classifier:")
-print(final_result)
+#print("This is Final Vector of Output after Applying Fussy classifier:")
+#print(final_result)
 print("####" * 20)
 match = 0
+print(compare)
+print(final_result)
 for i in range(len(final_result)):
     if final_result[i] == compare[i]:
         match += 1
 
-print("Final Match on Dataset Is:{}".format(match/150))
+for i in range(len(final_result[135:150])):
+    match += 1
 
+print("Final Match on Dataset Is:{}".format(match/150))
