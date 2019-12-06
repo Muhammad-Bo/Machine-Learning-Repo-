@@ -119,12 +119,8 @@ compare = compare.astype(np.int)
 dataset_f = B[0:len(B), 0:4]
 dataset_f = dataset_f.astype(np.float)
 dataset_f = dataset_f.tolist()
-# Intization(dataset, len(dataset[0]) - 1)
 minmax = find_min_max_dt(dataset_f)
-print(dataset_f)
-print("This is Min:{}".format(minmax))
 normalization_dt(dataset_f, minmax)
-print(dataset_f)
 n = len(dataset_f)
 matrix = np.zeros((n, 4))  # Pre-allocate matrix
 for i in range(1, n):
@@ -166,15 +162,13 @@ for i in range(len(result)):
     elif result[i] == 4:
         final_result.append(2)
 print("####" * 20)
-#print("This is Final Vector of Output after Applying Fussy classifier:")
-#print(final_result)
+print("This is Final Vector of Output after Applying Fussy classifier:")
+print(final_result)
 print("####" * 20)
 match = 0
-print(compare)
-print(final_result)
 for i in range(len(final_result)):
     if final_result[i] == compare[i]:
         match += 1
 
 
-print("Final Match on Dataset Is:{}".format(match/150))
+print("Final Match on Dataset Is: {} %".format(match/150 * 100))
