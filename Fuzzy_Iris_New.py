@@ -55,7 +55,7 @@ def rules(row_date, rule_number):
 
 def normalization_dt(datasets, minimum_max):
     for row in datasets:
-        for item in range(len(row) - 1):
+        for item in range(len(row)):
             row[item] = (row[item] - minimum_max[item][0]) / (minimum_max[item][1] - minimum_max[item][0])
 
 
@@ -121,7 +121,10 @@ dataset_f = dataset_f.astype(np.float)
 dataset_f = dataset_f.tolist()
 # Intization(dataset, len(dataset[0]) - 1)
 minmax = find_min_max_dt(dataset_f)
+print(dataset_f)
+print("This is Min:{}".format(minmax))
 normalization_dt(dataset_f, minmax)
+print(dataset_f)
 n = len(dataset_f)
 matrix = np.zeros((n, 4))  # Pre-allocate matrix
 for i in range(1, n):
@@ -173,7 +176,5 @@ for i in range(len(final_result)):
     if final_result[i] == compare[i]:
         match += 1
 
-for i in range(len(final_result[135:150])):
-    match += 1
 
 print("Final Match on Dataset Is:{}".format(match/150))
